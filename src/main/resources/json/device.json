@@ -1,0 +1,20 @@
+{
+  "deviceList": [
+    {
+      "username": "admin",
+      "password": "admin",
+      "deviceSite": "Beijing",
+      "esn": "xxxxxxxxxxxxxx",
+      "deviceIp": "192.168.11.1",
+      "audioIp": "172.20.10.2"
+    },
+    {
+      "username": "admin",
+      "password": "admin",
+      "deviceSite": "Shanghai",
+      "esn": "xxxxxxxxxxxxxxx",
+      "deviceIp": "192.168.11.2",
+      "audioIp": "172.20.10.3"
+    }
+  ]
+}

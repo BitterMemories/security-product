@@ -6,46 +6,18 @@
     <meta content='width=device-width, initial-scale=1.0' name='viewport'>
     <meta content='ie=edge' http-equiv='X-UA-Compatible'>
     <title>Document</title>
-    <link href='css/base.css' rel='stylesheet' />
-    <link href='css/index.css' rel='stylesheet' />
-    <link href='css/index1920.css' rel='stylesheet' />
-    <link href='css/switch_btn.css' rel='stylesheet' />
-    <link href='css/bootstrap3.3.5.min.css' rel='stylesheet' />
-    <link href='css/nav_style.css' rel='stylesheet' />
-    <script src='js/rem.js'></script>
-    <script src='js/slide.js'></script>
+    <link href='/css/base.css' rel='stylesheet' />
+    <link href='/css/index.css' rel='stylesheet' />
+    <link href='/css/index1920.css' rel='stylesheet' />
+    <link href='/css/switch_btn.css' rel='stylesheet' />
+    <link href='/css/bootstrap3.3.5.min.css' rel='stylesheet' />
+    <link href='/css/nav_style.css' rel='stylesheet' />
+    <script src='/js/rem.js'></script>
+    <script src='/js/slide.js'></script>
     <style>
-        /*.change {
-            color:#808080;  text-shadow:3px 3px 2px #808080;
-        }*/
         .disNone {
             display: none;
         }
-
-        .disBlock {
-            display: block !important;
-            position: relative;
-            right: 0;
-            bottom: -25px;
-        }
-
-        .warningText {
-            position: relative;
-            bottom: 0.5rem;
-            left: 1.5rem;
-        }
-
-        .soundWave {
-            display: none;
-        }
-
-        #video {
-            position: relative;
-            padding: 0.1rem;
-            width: 3.95rem;
-            height: 2.18rem;
-        }
-
         @media only screen and (max-width: 1920px) {}
     </style>
 </head>
@@ -71,13 +43,8 @@
     <div class='container'>
 
         <div class='main'>
-            <!--第三行-->
+            <!--video-->
             <div class='box' id='video_box'>
-                <!--第一行-->
-                <!--<div class='title'>-->
-                <!--<p>Crowding Detection</p>-->
-                <!--</div>-->
-                <!--第二行-->
                 <div class='second'>
                     <div class='status'>
                         <p class='text'>Status：</p>
@@ -98,17 +65,12 @@
                         </div>
                     </div>
                 </div>
+            </div>-->
                 <!--视频图-->
                 <div class='video_bg'>
                     <div class='video'>
-                        <!--<img src='http://192.168.13.3:5000/video_feed' height='375' width='208'>-->
-                        <!--<img src="" height='540' width='316'>-->
                         <div class='plugin' id='divPlugin'></div>
                         <div class='canvas'>
-                            <!--录音的音频-->
-                            <!--<canvas class='soundWave visualizer recording disBlock' id='canvas' width='360'-->
-                                <!--height='200'></canvas>-->
-                            <!--width='330' height='227'-->
                             <!--远程播放的音频-->
                             <div class='play' >
                                 <div class='waveform' id='waveform'></div>
@@ -116,20 +78,18 @@
                             </div>
                         </div>
                     </div>
-
                 </div>
             </div>
-
         </div>
-        <script src='js/jquery-3.2.1.min.js' type='text/javascript'></script>
-        <script src='js/lib/bootstrap3.3.5.min.js' type='text/javascript'></script>
-        <script src='js/wavesurfer.js' type='text/javascript'></script>
-        <script src='js/websocket.js' type='text/javascript'></script>
-        <script src='js/lib/jsPlugin-1.0.0.min.js' type='text/javascript'></script>
-        <script src='js/lib/webVideoCtrl.js' type='text/javascript'></script>
-        <script src='js/slide.js' type='text/javascript'></script>
-        <script src='js/slideVideo.js' type='text/javascript'></script>
-        <script src='js/index.js' type='text/javascript'></script>
+        <script src='/js/jquery-3.2.1.min.js' type='text/javascript'></script>
+        <script src='/js/lib/bootstrap3.3.5.min.js' type='text/javascript'></script>
+        <script src='/js/wavesurfer.js' type='text/javascript'></script>
+        <script src='/js/websocket.js' type='text/javascript'></script>
+        <script src='/js/lib/jsPlugin-1.0.0.min.js' type='text/javascript'></script>
+        <script src='/js/lib/webVideoCtrl.js' type='text/javascript'></script>
+        <script src='/js/slide.js' type='text/javascript'></script>
+        <script src='/js/slideVideo.js' type='text/javascript'></script>
+        <script src='/js/index.js' type='text/javascript'></script>
     </div>
 </div>
 </body>

@@ -2,15 +2,15 @@
   "deviceList": [
     {
       "username": "admin",
-      "password": "admin",
+      "password": "Changeme_123",
       "deviceSite": "Beijing",
       "esn": "xxxxxxxxxxxxxx",
       "deviceIp": "192.168.11.1",
-      "audioIp": "172.20.10.2"
+      "audioIp": "10.73.235.158"
     },
     {
       "username": "admin",
-      "password": "admin",
+      "password": "Changeme_123",
       "deviceSite": "Shanghai",
       "esn": "xxxxxxxxxxxxxxx",
       "deviceIp": "192.168.11.2",

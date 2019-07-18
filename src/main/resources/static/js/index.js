@@ -24,8 +24,8 @@ $(document).ready(function() {
     });
 });
 
-var httpUrl = "http://172.20.10.2:8080/api";
-var httpsUrl = "https://172.20.10.2:8080/api";
+var httpUrl = "http://10.73.235.158:8080/api";
+var httpsUrl = "https://10.73.235.158:8080/api";
 // var httpUrl = "http://192.168.199.157:8888";
 // var httpsUrl = "https://192.168.199.157:8884";
 //var socketUrl = "192.168.17.8";
@@ -81,20 +81,20 @@ var oPlugin = {
 
 var oLiveView = {
     iProtocol: 1,            // protocol 1：http, 2:https
-    szIP: "",    // protocol ip
-    szPort: "80",            // protocol port
-    szUsername: "",     // device username
-    szPassword: "", // device password
+    szIP: "176.0.6.120",    // protocol ip
+    szPort: 80,            // protocol port
+    szUsername: "admin",     // device username
+    szPassword: "Changeme_123", // device password
     audioIp:"",
     iStreamType: 1,          // stream 1：main stream  2：sub-stream  3：third stream  4：transcode stream
     iChannelID: 1,           // channel no
     bZeroChannel: false      // zero channel
 };
-
+var times;
 //调用 获取分支的接口
 branchList();
 
-//调用用户信息接口
+//调用用户信息接口S
 // getMedia();
 
 //-----------------------------------方法---------------------------------------------
@@ -126,15 +126,20 @@ function branchList() {
 			};
 			$(".nav-list").html(str);
             $(".nav-list").find(".nav-li-ul").eq(0).show();
-            oLiveView.szIP = data[1].deviceIp;
-            oLiveView.szPort = 8888;
-            oLiveView.szUsername =  data[1].username;
-            oLiveView.szPassword =  data[1].password;
+            oLiveView.szIP = "176.0.6.120";
+            // oLiveView.szIP = data[0].deviceIp;
+            oLiveView.szPort = 80;
+            oLiveView.szUsername =  "admin";
+            // oLiveView.szUsername =  data[0].username;
+            // oLiveView.szPassword =  data[0].password;
+            oLiveView.szPassword =  "Changeme_123";
             oLiveView.audioIp =  data[1].audioIp;
             sessionUserInfo.ipAddress =  data[1].audioIp;
             getMediaAudio();
             audioPlay();
-            // Login(oLiveView);
+            times=window.setInterval(audioPlay, 5000);
+            // console.log(oLiveView,"oLiveView")
+            Login(oLiveView);
         },
 		error:function(err){
 			console.log(err);
@@ -189,30 +194,66 @@ function getMediaAudio() {
 // 2019.07.08 add   Login()  clickStartRealPlay()
 
 function Login(oLiveView) {
-
-    WebVideoCtrl.I_Login(
-    	oLiveView.szIP,
-		oLiveView.iProtocol,
-		oLiveView.szPort,
-		oLiveView.szUsername,
-		oLiveView.szPassword,{
-        success: function (xmlDoc) {
-            // 开始预览
-            var szDeviceIdentify = oLiveView.szIP + "_" + oLiveView.szPort;
-            setTimeout(function () {
-                WebVideoCtrl.I_StartRealPlay(
-                	szDeviceIdentify, {// 开始预览
-                    iStreamType: oLiveView.iStreamType,
-                    iChannelID: oLiveView.iChannelID,
-                    bZeroChannel: oLiveView.bZeroChannel
-                });
-            }, 1000);
-        },
-        error: function (status, xmlDoc) {
-            console.log(szDeviceIdentify + " 登录失败！", status, xmlDoc)
-            // showOPInfo(szDeviceIdentify + " 登录失败！", status, xmlDoc);
+    console.log(oLiveView,"Login(oLiveView)");
+    // 初始化插件参数及插入插件
+    WebVideoCtrl.I_InitPlugin(oPlugin.iWidth, oPlugin.iHeight, {
+        bWndFull: true,//是否支持单窗口双击全屏，默认支持 true:支持 false:不支持
+        iWndowType: 1,
+        cbInitPluginComplete: function () {
+            WebVideoCtrl.I_InsertOBJECTPlugin("divPlugin");
+            console.log("cbInitPluginComplete");
+            // 检查插件是否最新
+            if (-1 == WebVideoCtrl.I_CheckPluginVersion()) {
+                alert("检测到新的插件版本，双击开发包目录里的WebComponentsKit.exe升级！");
+                return;
+            }
+            // console.log(oLiveView,"oLiveView111111")
+            // 登录设备
+            WebVideoCtrl.I_Login(oLiveView.szIP, oLiveView.iProtocol, oLiveView.szPort, oLiveView.szUsername, oLiveView.szPassword, {
+                success: function (xmlDoc) {
+                    // 开始预览
+					console.log("WebVideoCtrl.I_Login 开始预览");
+                    var szDeviceIdentify = oLiveView.szIP + "_" + oLiveView.szPort;
+                    setTimeout(function () {
+                        WebVideoCtrl.I_StartRealPlay(szDeviceIdentify, {
+                            iStreamType: oLiveView.iStreamType,
+                            iChannelID: oLiveView.iChannelID,
+                            bZeroChannel: oLiveView.bZeroChannel
+                        });
+                    }, 1000);
+                }
+            });
         }
     });
+
+
+
+	// console.log(oLiveView,"Login(oLiveView)");
+    // WebVideoCtrl.I_Login(
+    // 	oLiveView.szIP,
+		// oLiveView.iProtocol,
+		// oLiveView.szPort,
+		// oLiveView.szUsername,
+		// oLiveView.szPassword,{
+    //     success: function (xmlDoc) {
+    //         // 开始预览
+		// 	console.log("WebVideoCtrl  开始预览");
+    //         var szDeviceIdentify = oLiveView.szIP + "_" + oLiveView.szPort;
+    //         setTimeout(function () {
+    //             WebVideoCtrl.I_StartRealPlay(
+    //             	szDeviceIdentify, {// 开始预览
+		// 			iWndIndex:0,
+		// 			iStreamType: oLiveView.iStreamType,
+    //                 iChannelID: oLiveView.iChannelID,
+    //                 bZeroChannel: oLiveView.bZeroChannel
+    //             });
+    //         }, 1000);
+    //     },
+    //     error: function (status, xmlDoc) {
+    //         console.log(szDeviceIdentify + " 登录失败！", status, xmlDoc)
+    //         // showOPInfo(szDeviceIdentify + " 登录失败！", status, xmlDoc);
+    //     }
+    // });
 
 }
 
@@ -259,25 +300,24 @@ var MediaUtils = {
 	 * 关闭媒体流
 	 * @param stream {MediaStream} - 需要关闭的流
 	 */
-	closeStream: function (stream) {
-		if (typeof stream.stop === 'function') {
-			stream.stop();
-		} else {
-			let trackList = [stream.getAudioTracks(), stream.getVideoTracks()];
-
-			for (let i = 0; i < trackList.length; i++) {
-				let tracks = trackList[i];
-				if (tracks && tracks.length > 0) {
-					for (let j = 0; j < tracks.length; j++) {
-						let track = tracks[j];
-						if (typeof track.stop === 'function') {
-							track.stop();
-						}
-					}
-				}
-			}
-		}
-	}
+	// closeStream: function (stream) {
+	// 	if (typeof stream.stop === 'function') {
+	// 		stream.stop();
+	// 	} else {
+	// 		var trackList = [stream.getAudioTracks(), stream.getVideoTracks()];
+	// 		for (let i = 0; i < trackList.length; i++) {
+	// 			let tracks = trackList[i];
+	// 			if (tracks && tracks.length > 0) {
+	// 				for (let j = 0; j < tracks.length; j++) {
+	// 					let track = tracks[j];
+	// 					if (typeof track.stop === 'function') {
+	// 						track.stop();
+	// 					}
+	// 				}
+	// 			}
+	// 		};
+	// 	}
+	// }
 };
 
 //录音开始
@@ -290,7 +330,7 @@ function start() {
 //录制结束
 function stop() {
 	clearInterval(sendWav);
-	stopRecord();
+	// stopRecord();
 }
 
 // 录制短语音      开始录制
@@ -363,15 +403,15 @@ function save5secData() {
 }
 
 // 停止录制
-function stopRecord(callback) {
-	stopRecordCallback = callback;
-	// 终止录制器
-	recorder.stop();
-	// 关闭媒体流
-	MediaUtils.closeStream(mediaStream);
-}
+// function stopRecord(callback) {
+// 	stopRecordCallback = callback;
+// 	// 终止录制器
+// 	recorder.stop();
+// 	// 关闭媒体流
+// 	MediaUtils.closeStream(mediaStream);
+// }
 
-var times=setInterval(audioPlay, 5000);
+// var times=window.setInterval(audioPlay, 5000);
 //调用音频文件的接口，播放
 function audioPlay() {
 	$.ajax({
@@ -382,11 +422,12 @@ function audioPlay() {
 		// 	"client": sessionUserInfo.name
 		// },
 		success: function (data) {
-			if(data.length ==0 ){
+			console.log(data,"data");
+			if(data.length ==0){
 				return false;
 			}else {
-			clearInterval(times);
-			ajax_num++;
+                window.clearInterval(times);
+                ajax_num++;
 			console.log("这是第" + ajax_num + "次请求");
             // visualizeNew();
             $.each(data, function (i, obj) {
@@ -465,7 +506,7 @@ function wavesurferPlay(arr) {
 		console.log("第" + num + "条报错了，未找到路径")
 		wavesurfer.load(urlList[num]); //加载当前num
 		console.log("345行-播放第几条" + urlList[num]);
-		audioPlay();  //调用音频路径的接口
+		// audioPlay();  //调用音频路径的接口
 		wavesurfer.play(); //播放
 	});
 }
@@ -549,8 +590,8 @@ function NormalAudio(data) {
 	//		$("#statusAudio").html("Normal"); //音频状态标识
 	$("#statusAudio").html(data);
 	$("#statusAudio").css("color", "#00FFFF").removeClass("warningText");
-	$(".status .lds-css2").addClass("disNone").removeClass("disBlock")
-	$(".status .audio_img1").removeClass("disNone").attr("src", '/image/Normal46.png');;
+	$(".status .lds-css2").addClass("disNone").removeClass("disBlock");
+	$(".status .audio_img1").removeClass("disNone").attr("src", '/image/Normal46.png');
 }
 //视频显示warning
 function WarningVideo(data) {
@@ -574,43 +615,46 @@ function showPage() {
 }
 
 $(function () {
-    // 检查插件是否已经安装过
-    var iRet = WebVideoCtrl.I_CheckPluginInstall();
-    if (-1 == iRet) {
-        alert("您还未安装过插件，双击开发包目录里的WebComponentsKit.exe安装！");
-        return;
-    }
+    // // 检查插件是否已经安装过
+    // var iRet = WebVideoCtrl.I_CheckPluginInstall();
+    // if (-1 == iRet) {
+    //     alert("您还未安装过插件，双击开发包目录里的WebComponentsKit.exe安装！");
+    //     return;
+    // }
+    //
+    // // 初始化插件参数及插入插件
+    // WebVideoCtrl.I_InitPlugin(oPlugin.iWidth, oPlugin.iHeight, {
+    //     bWndFull: true,//是否支持单窗口双击全屏，默认支持 true:支持 false:不支持
+    //     iWndowType: 1,
+    //     cbInitPluginComplete: function () {
+    //         WebVideoCtrl.I_InsertOBJECTPlugin("divPlugin");
+    //
+    //         // 检查插件是否最新
+    //         if (-1 == WebVideoCtrl.I_CheckPluginVersion()) {
+    //             alert("检测到新的插件版本，双击开发包目录里的WebComponentsKit.exe升级！");
+    //             return;
+    //         }
+    //         // console.log(oLiveView,"oLiveView111111")
+    //         // 登录设备
+    //         // WebVideoCtrl.I_Login(oLiveView.szIP, oLiveView.iProtocol, oLiveView.szPort, oLiveView.szUsername, oLiveView.szPassword, {
+    //         //     success: function (xmlDoc) {
+    //         //         // 开始预览
+    //         //         var szDeviceIdentify = oLiveView.szIP + "_" + oLiveView.szPort;
+    //         //         setTimeout(function () {
+    //         //             WebVideoCtrl.I_StartRealPlay(szDeviceIdentify, {
+    //         //                 iStreamType: oLiveView.iStreamType,
+    //         //                 iChannelID: oLiveView.iChannelID,
+    //         //                 bZeroChannel: oLiveView.bZeroChannel
+    //         //             });
+    //         //         }, 1000);
+    //         //     }
+    //         // });
+    //     }
+    // });
 
-    // 初始化插件参数及插入插件
-    WebVideoCtrl.I_InitPlugin(oPlugin.iWidth, oPlugin.iHeight, {
-        bWndFull: true,//是否支持单窗口双击全屏，默认支持 true:支持 false:不支持
-        iWndowType: 1,
-        cbInitPluginComplete: function () {
-            WebVideoCtrl.I_InsertOBJECTPlugin("divPlugin");
-
-            // 检查插件是否最新
-            if (-1 == WebVideoCtrl.I_CheckPluginVersion()) {
-                alert("检测到新的插件版本，双击开发包目录里的WebComponentsKit.exe升级！");
-                return;
-            }
-
-            // // 登录设备
-            // WebVideoCtrl.I_Login(oLiveView.szIP, oLiveView.iProtocol, oLiveView.szPort, oLiveView.szUsername, oLiveView.szPassword, {
-            //     success: function (xmlDoc) {
-            //         // 开始预览
-            //         var szDeviceIdentify = oLiveView.szIP + "_" + oLiveView.szPort;
-            //         setTimeout(function () {
-            //             WebVideoCtrl.I_StartRealPlay(szDeviceIdentify, {
-            //                 iStreamType: oLiveView.iStreamType,
-            //                 iChannelID: oLiveView.iChannelID,
-            //                 bZeroChannel: oLiveView.bZeroChannel
-            //             });
-            //         }, 1000);
-            //     }
-            // });
-        }
-    });
-
+    // $(window).unload(function () {
+    //     WebVideoCtrl.I_Stop();
+    // });
 
 
     //让页面延迟加载，不出现小图

@@ -60,7 +60,9 @@ public class SecurityService {
                 executorService.shutdown();
             }
         }
+        lastAudioList.clear();
         lastAudioList.addAll(audioList);
+        lastAudioList.forEach(System.out::println);
         CommonConstants.map.put(CommonConstants.LASTAUDIOLIST,lastAudioList);
         return audioList;
     }
@@ -70,10 +72,10 @@ public class SecurityService {
             boolean result = true;
             LinkedList<JsonObject> audioList = null;
             while (result){
-                Thread.sleep(3000);
                 audioList = media.getAudio().getAudioList();
                 JsonObject lastAudio = lastAudioList.getLast();
                 if(audioList.contains(lastAudio)){
+                    Thread.sleep(3000);
                     continue;
                 }
                 result = false;

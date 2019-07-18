@@ -6,7 +6,7 @@ var socketClient;
 var lockReconnect = false;
 var reconnectTime;
 
-var websocketUrl = "172.20.10.2:8080";
+var websocketUrl = "10.73.235.158:8080";
 // var websocketUrl = "192.168.199.157:8888";
 
 // 监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
@@ -21,7 +21,7 @@ function createWebSocket(ip) {
     //  userInfoData = JSON.stringify(userInfoData);
     //  console.log(userInfoData);
     if ("WebSocket" in window) {
-        var socketUrl = 'ws://'+ websocketUrl +'/websocket';
+        var socketUrl = 'ws://'+ websocketUrl +'/websocket/'+ip;
         console.log(socketUrl,websocketUrl,'socketUrl');
         socketClient = new WebSocket(socketUrl);
         socketClient.binaryType = 'arraybuffer';
@@ -29,7 +29,7 @@ function createWebSocket(ip) {
         socketClient.onopen = function (data) {// 打开连接
             lockReconnect = true;
             //          sendRegister();
-            console.log("onopen打开连接")
+            console.log("onopen打开连接");
             console.log(data);
             reconnect();
             clearTimeout(reconnectTime);

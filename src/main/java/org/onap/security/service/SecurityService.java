@@ -62,7 +62,6 @@ public class SecurityService {
         }
         lastAudioList.clear();
         lastAudioList.addAll(audioList);
-        lastAudioList.forEach(System.out::println);
         CommonConstants.map.put(CommonConstants.LASTAUDIOLIST,lastAudioList);
         return audioList;
     }

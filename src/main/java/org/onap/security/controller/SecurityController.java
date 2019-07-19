@@ -87,7 +87,7 @@ public class SecurityController {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response startRecording(){
-        ResponseEntity<String> entity = restTemplate.postForEntity("http://172.20.10.3:8080/audio/recordingStart", null, String.class);
+        ResponseEntity<String> entity = restTemplate.postForEntity("http://172.20.10.7:8080/audio/recordingStart", null, String.class);
         return builder.buildResponse(200,entity);
     }
 

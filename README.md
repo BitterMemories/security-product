@@ -1,2 +1,2 @@
 # security-product
-ecurity and protection monitoring
+security and protection monitoring

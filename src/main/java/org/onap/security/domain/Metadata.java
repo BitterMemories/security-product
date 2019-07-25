@@ -61,4 +61,16 @@ public class Metadata {
     public void setDeviceSite(String deviceSite) {
         this.deviceSite = deviceSite;
     }
+
+    @Override
+    public String toString() {
+        return "Metadata{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", audioIp='" + audioIp + '\'' +
+                ", deviceIp='" + deviceIp + '\'' +
+                ", esn='" + esn + '\'' +
+                ", deviceSite='" + deviceSite + '\'' +
+                '}';
+    }
 }

@@ -10,11 +10,14 @@ import org.onap.security.domain.Metadata;
 import org.onap.security.domain.Video;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
-import java.io.*;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,15 +28,17 @@ public class InitConfig implements CommandLineRunner {
 
 
 
-    @Value("classpath:json/device.json")
-    private Resource resource;
+    //@Value("classpath:json/device.json")
+    //private Resource resource;
 
     @Override
     public void run(String... args){
         String json = null;
         try {
-            File resourceFile = resource.getFile();
-            BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(resourceFile)));
+            InputStream stream = getClass().getClassLoader().getResourceAsStream("json/device.json");
+            //File resourceFile = resource.getFile();
+            //BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(resourceFile)));
+            BufferedReader br = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
             StringBuilder sb = new StringBuilder();
             String value;
             while ((value = br.readLine()) != null){

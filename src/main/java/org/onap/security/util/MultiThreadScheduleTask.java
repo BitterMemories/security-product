@@ -2,6 +2,7 @@ package org.onap.security.util;
 
 import com.google.gson.JsonObject;
 import org.onap.security.common.CommonConstants;
+import org.onap.security.common.SystemException;
 import org.onap.security.domain.Audio;
 import org.onap.security.domain.Media;
 import org.onap.security.service.WebSocketServer;
@@ -44,7 +45,8 @@ public class MultiThreadScheduleTask {
                         jsonObject.addProperty("status",audio.getStatus());
                         try {
                             WebSocketServer.sendInfo(jsonObject.toString(),((Media) media).getMetadata().getAudioIp());
-                        } catch (IOException e) {
+                            RestClient.sendBandWidthEvent(RestClient.NORMAL,null);
+                        } catch (IOException | SystemException e) {
                             e.printStackTrace();
                         }
                     }

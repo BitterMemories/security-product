@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -33,6 +34,25 @@ public class SecurityController {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @POST
+    @Path("/insertNode")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response insertNode(String requestJson){
+        Metadata metadata = gson.fromJson(requestJson, Metadata.class);
+        securityService.addMonitoringNode(metadata);
+        return builder.buildResponse(200,null);
+    }
+
+    @DELETE
+    @Path("/deleteNode/{audioIp}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteNode(@PathParam("audioIp") String audioIp){
+        securityService.deleteNodeByAudioIp(audioIp);
+        return builder.buildResponse(200,null);
+    }
 
     @POST
     @Path("/audioProcessing/{audioIp}")

@@ -24,8 +24,8 @@ $(document).ready(function() {
     });
 });
 
-var httpUrl = "http://10.73.235.158:8080/api";
-var httpsUrl = "https://10.73.235.158:8080/api";
+var httpUrl = "http://10.73.137.88:8080/api";
+var httpsUrl = "https://10.73.137.88:8080/api";
 // var httpUrl = "http://192.168.199.157:8888";
 // var httpsUrl = "https://192.168.199.157:8884";
 //var socketUrl = "192.168.17.8";

@@ -7,6 +7,8 @@ import org.onap.security.common.ResponseBuilder;
 import org.onap.security.domain.Media;
 import org.onap.security.domain.Metadata;
 import org.onap.security.service.SecurityService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -22,6 +24,8 @@ import java.util.List;
 @Component
 @Path("/")
 public class SecurityController {
+
+    private static final Logger logger = LoggerFactory.getLogger(SecurityController.class);
 
     @Autowired
     private ResponseBuilder builder;
@@ -42,6 +46,7 @@ public class SecurityController {
     public Response insertNode(String requestJson){
         Metadata metadata = gson.fromJson(requestJson, Metadata.class);
         securityService.addMonitoringNode(metadata);
+        logger.info("insert node Metadata: "+requestJson);
         return builder.buildResponse(200,null);
     }
 

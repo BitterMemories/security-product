@@ -4,4 +4,6 @@ MAINTAINER LiXiao <memories_xiao@163.com>
 
 COPY target/security-0.0.1-SNAPSHOT.jar /app.jar
 
+COPY src/main/resources/json/device.json /usr/share/json/
+
 CMD ["java","-jar","app.jar"]

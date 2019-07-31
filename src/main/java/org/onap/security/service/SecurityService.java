@@ -2,7 +2,6 @@ package org.onap.security.service;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import net.sf.json.JSONObject;
 import org.onap.security.common.CommonConstants;
 import org.onap.security.common.SystemException;
@@ -15,9 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
-import javax.ws.rs.core.Response;
 import java.io.*;
-import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -43,7 +40,7 @@ public class SecurityService {
             try {
                 WebSocketServer.sendInfo(audioJson.toString(),media.getMetadata().getAudioIp());
                 RestClient.sendBandWidthEvent(RestClient.ABNORMAL,null);
-                logger.debug("Push messages to the client："+audioJson.toString());
+                logger.info("Push messages to the client："+audioJson.toString());
             } catch (IOException | SystemException e) {
                 e.printStackTrace();
             }
@@ -88,24 +85,10 @@ public class SecurityService {
         };
     }
 
-    public Response insertNode(String requestJson, Metadata metadata){
-        Media media = new Media();
-        media.setAudio(new Audio());
-        media.setVideo(new Video());
-        media.setMetadata(metadata);
-        CommonConstants.map.put(metadata.getAudioIp(),media);
-
-        List<Metadata> metadataList = new Gson().fromJson(requestJson,new TypeToken<List<Metadata>>(){}.getType());
-        metadataList.add(metadata);
-
-        return null;
-    }
-
     public String fromJsonMetadata(){
         String json = null;
         try {
-            InputStream stream = getClass().getClassLoader().getResourceAsStream("json/device.json");
-            BufferedReader br = new BufferedReader(new InputStreamReader(stream, StandardCharsets.UTF_8));
+            BufferedReader br = new BufferedReader(new FileReader(CommonConstants.JSON_PATH));
             StringBuilder sb = new StringBuilder();
             String value;
             while ((value = br.readLine()) != null){
@@ -114,6 +97,7 @@ public class SecurityService {
             br.close();
             json = sb.toString();
         } catch (IOException e) {
+            logger.error("character stream read failed！filePath = " + CommonConstants.JSON_PATH);
             e.printStackTrace();
         }
         return json ;
@@ -122,10 +106,12 @@ public class SecurityService {
     private void writeJson(Object o){
         BufferedWriter out = null;
         try {
-            out = new BufferedWriter(new FileWriter(this.getClass().getClassLoader().getResource("json/device.json").getPath(),false));
+            FileWriter fileWriter = new FileWriter(CommonConstants.JSON_PATH, false);
+            out = new BufferedWriter(fileWriter);
             out.append(new Gson().toJson(o));
             out.flush();
         } catch (IOException e) {
+            logger.error("character stream write failed！   " + o.toString());
             e.printStackTrace();
         }finally {
             if(out!=null){
@@ -144,7 +130,7 @@ public class SecurityService {
         if(optionalMetadata.isPresent()){
             metadataList.remove(optionalMetadata.get());
             writeJson(metadataList);
-            logger.debug("deleteNode metadata is:"+optionalMetadata.get());
+            logger.info("delete node audioIp = "+audioIp);
         }
     }
 
@@ -166,7 +152,7 @@ public class SecurityService {
         media.setMetadata(metadata);
         CommonConstants.map.put(CommonConstants.LASTAUDIOLIST,new LinkedList<JSONObject>());
         CommonConstants.map.put(metadata.getAudioIp(),media);
-        logger.debug("initNodeData metadata is:"+metadata);
+        logger.info("initNodeData metadata is:"+metadata);
     }
 
 }

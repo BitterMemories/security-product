@@ -6,6 +6,7 @@ import org.onap.security.common.CommonConstants;
 import org.onap.security.domain.Metadata;
 import org.onap.security.service.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,9 @@ import java.util.List;
 
 @Component
 public class InitConfig implements CommandLineRunner {
+
+    @Value("${JSON_PATH}")
+    private String JSON_PATH;
 
     @Autowired
     private SecurityService securityService;
@@ -22,6 +26,7 @@ public class InitConfig implements CommandLineRunner {
 
     @Override
     public void run(String... args){
+        CommonConstants.JSON_PATH = this.JSON_PATH;
         String json = securityService.fromJsonMetadata();
         if(!json.isEmpty()){
             List<Metadata> metadataList = new Gson().fromJson(json,new TypeToken<List<Metadata>>(){}.getType());

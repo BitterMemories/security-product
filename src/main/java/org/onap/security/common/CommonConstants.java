@@ -1,8 +1,14 @@
 package org.onap.security.common;
 
+import org.springframework.stereotype.Component;
+
 import java.util.concurrent.ConcurrentHashMap;
 
+
+@Component
 public final class CommonConstants {
+
+    public static String JSON_PATH;
 
     public static final String WARNING = "warning";
 

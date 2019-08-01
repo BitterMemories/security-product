@@ -24,12 +24,8 @@ $(document).ready(function() {
     });
 });
 
-var httpUrl = "http://10.73.137.88:8080/api";
-var httpsUrl = "https://10.73.137.88:8080/api";
-// var httpUrl = "http://192.168.199.157:8888";
-// var httpsUrl = "https://192.168.199.157:8884";
-//var socketUrl = "192.168.17.8";
-//var socketUrl = window.location.host;
+var httpUrl = "http://localhost:8080/api";
+var socketUrl = "localhost:8080";
 
 //用来接收用户信息接口请求过来的data
 var sessionUserInfo = {
@@ -47,20 +43,6 @@ var chunks = [];
 
 // 用于存放录制后的音频文件对象和录制结束回调
 var recorderFile, stopRecordCallback;
-
-// 用于存放是否开启了视频录制
-// var videoEnabled = false;
-// var audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-//
-// var analyser = audioCtx.createAnalyser();
-// analyser.minDecibels = -90;
-// analyser.maxDecibels = -10;
-// analyser.smoothingTimeConstant = 0.85;
-//
-// var distortion = audioCtx.createWaveShaper();
-// var gainNode = audioCtx.createGain();
-// var biquadFilter = audioCtx.createBiquadFilter();
-// var convolver = audioCtx.createConvolver();
 
 var sendWav;
 
@@ -167,27 +149,8 @@ function getMediaAudio() {
 				} else {
 					console.log(data.audio.status,"data.audio.status");
 				}
-				// if(data.audio.status == "Warning" && data.video.status == "Warning"){
-				// 	//WarningVideo(data.video.status);
-				// 	WarningAudio(data.audio.status);
-				// }else if(data.audio.status == "Normal" && data.video.status == "Normal"){
-				// 	console.log(data.audio.status,"====audiostatus");
-				// 	NormalAudio(data.audio.status);
-				// 	//NormalVideo(data.video.status);
-				// }else if(data.audio.status == "Warning" && data.video.status == "Normal"){
-				// 	console.log(data.audio.status);
-				// 	WarningAudio(data.audio.status);
-				// 	//NormalVideo(data.video.status);
-				// }else if(data.audio.status == "Normal" && data.video.status == "Warning"){
-				// 	NormalAudio(data.audio.status);
-				// 	//WarningVideo(data.video.status);
-				// };
 			}
 		},
-		//			error:function(err){
-		//				console.log(err);
-		//				window.location.href="../video";
-		//			}
 	});
 }
 
@@ -225,35 +188,6 @@ function Login(oLiveView) {
             });
         }
     });
-
-
-
-	// console.log(oLiveView,"Login(oLiveView)");
-    // WebVideoCtrl.I_Login(
-    // 	oLiveView.szIP,
-		// oLiveView.iProtocol,
-		// oLiveView.szPort,
-		// oLiveView.szUsername,
-		// oLiveView.szPassword,{
-    //     success: function (xmlDoc) {
-    //         // 开始预览
-		// 	console.log("WebVideoCtrl  开始预览");
-    //         var szDeviceIdentify = oLiveView.szIP + "_" + oLiveView.szPort;
-    //         setTimeout(function () {
-    //             WebVideoCtrl.I_StartRealPlay(
-    //             	szDeviceIdentify, {// 开始预览
-		// 			iWndIndex:0,
-		// 			iStreamType: oLiveView.iStreamType,
-    //                 iChannelID: oLiveView.iChannelID,
-    //                 bZeroChannel: oLiveView.bZeroChannel
-    //             });
-    //         }, 1000);
-    //     },
-    //     error: function (status, xmlDoc) {
-    //         console.log(szDeviceIdentify + " 登录失败！", status, xmlDoc)
-    //         // showOPInfo(szDeviceIdentify + " 登录失败！", status, xmlDoc);
-    //     }
-    // });
 
 }
 
@@ -296,28 +230,6 @@ var MediaUtils = {
 		}
 	},
 
-	/**
-	 * 关闭媒体流
-	 * @param stream {MediaStream} - 需要关闭的流
-	 */
-	// closeStream: function (stream) {
-	// 	if (typeof stream.stop === 'function') {
-	// 		stream.stop();
-	// 	} else {
-	// 		var trackList = [stream.getAudioTracks(), stream.getVideoTracks()];
-	// 		for (let i = 0; i < trackList.length; i++) {
-	// 			let tracks = trackList[i];
-	// 			if (tracks && tracks.length > 0) {
-	// 				for (let j = 0; j < tracks.length; j++) {
-	// 					let track = tracks[j];
-	// 					if (typeof track.stop === 'function') {
-	// 						track.stop();
-	// 					}
-	// 				}
-	// 			}
-	// 		};
-	// 	}
-	// }
 };
 
 //录音开始
@@ -401,15 +313,6 @@ function save5secData() {
 	//console.log("save");
 	recorder.start();
 }
-
-// 停止录制
-// function stopRecord(callback) {
-// 	stopRecordCallback = callback;
-// 	// 终止录制器
-// 	recorder.stop();
-// 	// 关闭媒体流
-// 	MediaUtils.closeStream(mediaStream);
-// }
 
 // var times=window.setInterval(audioPlay, 5000);
 //调用音频文件的接口，播放
@@ -511,15 +414,6 @@ function wavesurferPlay(arr) {
 	});
 }
 
-//监听窗口放大缩小时canvas的变动
-// $(document).ready(function () {
-// 	$(window).resize(function () {
-// 		var canvas = document.getElementById('canvas');
-// 		canvas.setAttribute('width', 250);
-// 		canvas.setAttribute('height', 157);
-// 	});
-// });
-
 //跳动音频的canvas
 function visualizeNew() {
 	// we're ready to receive some data!
@@ -615,59 +509,11 @@ function showPage() {
 }
 
 $(function () {
-    // // 检查插件是否已经安装过
-    // var iRet = WebVideoCtrl.I_CheckPluginInstall();
-    // if (-1 == iRet) {
-    //     alert("您还未安装过插件，双击开发包目录里的WebComponentsKit.exe安装！");
-    //     return;
-    // }
-    //
-    // // 初始化插件参数及插入插件
-    // WebVideoCtrl.I_InitPlugin(oPlugin.iWidth, oPlugin.iHeight, {
-    //     bWndFull: true,//是否支持单窗口双击全屏，默认支持 true:支持 false:不支持
-    //     iWndowType: 1,
-    //     cbInitPluginComplete: function () {
-    //         WebVideoCtrl.I_InsertOBJECTPlugin("divPlugin");
-    //
-    //         // 检查插件是否最新
-    //         if (-1 == WebVideoCtrl.I_CheckPluginVersion()) {
-    //             alert("检测到新的插件版本，双击开发包目录里的WebComponentsKit.exe升级！");
-    //             return;
-    //         }
-    //         // console.log(oLiveView,"oLiveView111111")
-    //         // 登录设备
-    //         // WebVideoCtrl.I_Login(oLiveView.szIP, oLiveView.iProtocol, oLiveView.szPort, oLiveView.szUsername, oLiveView.szPassword, {
-    //         //     success: function (xmlDoc) {
-    //         //         // 开始预览
-    //         //         var szDeviceIdentify = oLiveView.szIP + "_" + oLiveView.szPort;
-    //         //         setTimeout(function () {
-    //         //             WebVideoCtrl.I_StartRealPlay(szDeviceIdentify, {
-    //         //                 iStreamType: oLiveView.iStreamType,
-    //         //                 iChannelID: oLiveView.iChannelID,
-    //         //                 bZeroChannel: oLiveView.bZeroChannel
-    //         //             });
-    //         //         }, 1000);
-    //         //     }
-    //         // });
-    //     }
-    // });
-
-    // $(window).unload(function () {
-    //     WebVideoCtrl.I_Stop();
-    // });
-
-
     //让页面延迟加载，不出现小图
 	setTimeout(showPage, 1);
-	//一进页面开始调录音
-	// start();
-	//一进页面开始调用放音
-    // audioPlay();
-	//一进页面开始调视频地址
-	// $(".video img").attr("src", "http://192.168.17.3:5001/video_feed");
 
 	//调用创建websocket连接
-	createWebSocket(sessionUserInfo.ipAddress);
+	createWebSocket(socketUrl,sessionUserInfo.ipAddress);
 
 	//WarningAudio('Warning')
 	//setTimeout(NormalAudio('Normal'), 10000);

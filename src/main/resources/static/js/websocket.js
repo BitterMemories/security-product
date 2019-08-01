@@ -6,23 +6,20 @@ var socketClient;
 var lockReconnect = false;
 var reconnectTime;
 
-var websocketUrl = "10.73.137.88:8080";
-// var websocketUrl = "192.168.199.157:8888";
-
 // 监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
 window.onbeforeunload = function () {
     socketClient.close();
 }
 
 //建立连接
-function createWebSocket(ip) {
+function createWebSocket(host,ip) {
     console.log(sessionUserInfo, '===sessionUserInfo');
     //	var userInfoData = userInfo;
     //  userInfoData = JSON.stringify(userInfoData);
     //  console.log(userInfoData);
     if ("WebSocket" in window) {
-        var socketUrl = 'ws://'+ websocketUrl +'/websocket/'+ip;
-        console.log(socketUrl,websocketUrl,'socketUrl');
+        var socketUrl = 'ws://'+ host +'/websocket/'+ip;
+        console.log(socketUrl,host,'socketUrl');
         socketClient = new WebSocket(socketUrl);
         socketClient.binaryType = 'arraybuffer';
 
@@ -71,13 +68,6 @@ function reconnect() {
         lockReconnect = false;
     }, 2000);
 }
-
-//给后台发送消息时的信息
-//function sendRegister(){
-//  var userInfoData = userInfo.ip;
-//  userInfoData = JSON.stringify(userInfoData);
-//	socketClient.send(userInfoData); //传获取到的用户信息的ip
-//}
 
 //后台返回的消息，前端改变视频状态值
 function onMessageShow(event) {
